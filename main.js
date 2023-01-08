@@ -1,16 +1,26 @@
-const scene = new THREE.Scene();
+//document.write("<p>main hello world</p>");
 
-const camera = new THREE.PerspectiveCamera(
+//refactor - name variables to use in multiple functions
+let scene, camera, renderer, cube;
+
+//refactor function init holds all but the animate function1
+function init() {
+scene = new THREE.Scene();
+
+
+camera = new THREE.PerspectiveCamera(
     75,
     //define the aspect ratio
-    window.innerWidth / window.innerHeight
+    window.innerWidth / window.innerHeight,
     //define near focal plane
-    0.1
+    0.1,
     //define far focal plane
-    1000
+    1000,
 );
-
-const renderer = new THREE.WebGLRenderer();
+//define rendering
+//const renderer = new THREE.WebGLRenderer();
+//change render style
+renderer = new THREE.WebGLRenderer({antialias:true});
 
 renderer.setSize(window.innerWidth, window.innerHeight);
 
@@ -20,14 +30,33 @@ document.body.appendChild(renderer.domElement);
 
 // define object to render
 const geometry = new THREE.BoxGeometry(2,2,2);
-const material = new THREE.MeshBasicMaterial({color: pink});
-const cube = new THREE.(geometry,material);
+const material = new THREE.MeshBasicMaterial({color: 0x0000ff});
+cube = new THREE.Mesh(geometry,material);
 // add object to scene
 scene.add(cube);
 camera.position.z = 5// place camera at a location different than the object location
+}
+
+
 function animate() {
     requestAnimationFrame(animate);
+    cube.rotation.x += 0.01;
+    cube.rotation.y += 0.01;
+    cube.rotation.z += 0.11;
     renderer.render(scene,camera);
 }
-//call the animate function
+
+// make responsive to window resizing
+function onWindowResize() {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+}
+
+//call the window resize function with an event listener
+window.addEventListener('resize', onWindowResize, false);
+
+//refactor call the init function to display scene
+init();
+//call the animate function to display object
 animate();
