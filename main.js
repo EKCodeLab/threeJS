@@ -30,7 +30,11 @@ document.body.appendChild(renderer.domElement);
 
 // define object to render
 const geometry = new THREE.BoxGeometry(2,2,2);
-const material = new THREE.MeshBasicMaterial({color: 0x0000ff});
+//const material = new THREE.MeshBasicMaterial({color: 0x0000ff});
+// add an image(texture) to the object--first load the image
+const texture = new THREE.TextureLoader().load('textures/crate.gif')
+// assign the image to the cube
+const material = new THREE.MeshBasicMaterial({ map: texture});
 cube = new THREE.Mesh(geometry,material);
 // add object to scene
 scene.add(cube);
